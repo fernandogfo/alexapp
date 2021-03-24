@@ -1,6 +1,7 @@
 package alexa.app.bot.controller
 
 import alexa.app.bot.service.ChannelService
+import alexa.app.model.response.CreateClipResponse
 import alexa.app.service.AuthService
 import feign.Headers
 import org.hibernate.bytecode.BytecodeLogger.LOGGER
@@ -19,7 +20,7 @@ class ChannelController @Autowired constructor(
     val logger: Logger = Logger.getLogger(ChannelController::class.java.name)
 
     @PostMapping("/clips")
-    fun createClip(@RequestHeader("email") email: String): ResponseEntity<Unit> {
+    fun createClip(@RequestHeader("email") email: String): ResponseEntity<CreateClipResponse> {
 
         logger.info("POST -> v1/channel/clips")
         logger.info("Criando clip para o usuário de email: ${email}")
