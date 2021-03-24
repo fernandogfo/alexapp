@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+          crossorigin="anonymous">
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	
+	<div class="container h-100">
+    <div class="row align-items-center h-100">
+        <div class="col-6 mx-auto">
+            <div class="jumbotron">
+				
+				<img src="http://renkobrasil.com/images/manutencao.gif" ></br> </br>
+
+				
+               <div class="mb-3">
+<form th:action="@{finish}" th:object="${authEmailAndCode}" th:method="POST">
+    <label for="userEmail" class="form-label">Insira o mesmo email utilizado no cadastro da alexa abaixo para concluir o cadastro!</label>
+    <input th:type="text" class="form-control" id="userEmail" th:name="userEmail"></br>
+    <input type="submit" class="btn btn-primary" value="Enviar">
+    <input th:type="hidden" class="invisible" id="code" th:value="${code}" th:name="code">
+
+</form>
+</div>
+				   
+            </div>
+        </div>
+    </div>
+</div>
+	
+	
+
+</body>
+</html>
