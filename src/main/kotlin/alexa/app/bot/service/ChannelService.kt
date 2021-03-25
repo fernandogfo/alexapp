@@ -4,6 +4,7 @@ import alexa.app.client.twitchBot.ChannelClient
 import alexa.app.config.BotConfig
 import alexa.app.config.TwitchUrls
 import alexa.app.model.User
+import alexa.app.model.request.StartCommercialBody
 import alexa.app.utils.StringToBearer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -28,4 +29,14 @@ class ChannelService @Autowired constructor(
             }
     }
 
+
+    fun startCommercial(user: User, timeInSeconds:Int?){
+        channelClient.startCommercial(
+            StartCommercialBody(user.twitchUserId, timeInSeconds?:30),
+            StringToBearer.insertBearer(user.twitchUserAccessToken),
+            botConfig.getClientId()
+        ).also {
+            chatService.sendMessage(user.twitchUserLogin, "Rodando comercial por ${timeInSeconds?:30} segundos.")
+        }
+    }
 }
