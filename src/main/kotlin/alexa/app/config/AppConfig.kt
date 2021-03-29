@@ -8,6 +8,6 @@ import org.springframework.context.annotation.PropertySource
 @EntityScan(basePackages = ["alexa.app.model"])
 @PropertySource(
     ignoreResourceNotFound = true,
-    value = ["classpath:application.properties", "classpath:application-prod.properties"]
+    value = ["classpath:application.properties", "classpath:application-dev.properties"]
 )
 class AppConfig 

@@ -28,6 +28,9 @@ class BotConfig {
     @Value("\${twitch.app.permission.url}")
     private lateinit var twitchAppAuthUrl: String
 
+    @Value("\${jwt.secret}")
+    private lateinit var jwtSecret: String
+
     @Bean
     fun credentialBuilder(): CredentialManager {
             return CredentialManagerBuilder.builder().build().also {
@@ -58,6 +61,10 @@ class BotConfig {
 
     fun getTwitchAppUrlAuth(): String {
         return twitchAppAuthUrl
+    }
+
+    fun getJwtSecret(): String{
+        return jwtSecret
     }
 
 }
