@@ -16,7 +16,7 @@ class SendEmailController @Autowired constructor(
 
     @PostMapping
     fun send(
-        @RequestParam("Authorization") jwt: String,
+        @RequestHeader("Authorization") jwt: String,
         @RequestHeader("topic") topic: String, @RequestHeader("userName") userName: String
     ) {
 
