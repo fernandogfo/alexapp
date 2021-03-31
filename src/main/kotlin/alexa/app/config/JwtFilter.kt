@@ -33,7 +33,7 @@ class JwtFilter @Autowired constructor(private val jwtUtil: JwtUtil) : OncePerRe
             logger.info("JWT: ${request.getHeader("Authorization")}")
             return throw NotFoundException("Acesso Negado!")
         }
-        
+
         SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
             jwtUtil.decode(request.getHeader("Authorization").toString()), null, Collections.emptyList())
         filterChain.doFilter(request, response)
