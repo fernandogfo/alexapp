@@ -2,19 +2,13 @@ package alexa.app.config
 
 import alexa.app.exception.NotFoundException
 import alexa.app.utils.JwtUtil
-import org.hibernate.annotations.Filter
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
-import org.springframework.web.filter.GenericFilterBean
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JwtFilter @Autowired constructor(private val jwtUtil: JwtUtil): OncePerRequestFilter() {
+class JwtFilter @Autowired constructor(private val jwtUtil: JwtUtil) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -23,13 +17,15 @@ class JwtFilter @Autowired constructor(private val jwtUtil: JwtUtil): OncePerReq
     ) {
         val pathsToPass = arrayOf("/v1/auth/alexa", "/v1/auth/finish", "", "/")
 
-        pathsToPass.forEach { if (it == request.requestURI) {
-            filterChain.doFilter(request, response)
-            return
-        } }
+        pathsToPass.forEach {
+            if (it == request.requestURI) {
+                filterChain.doFilter(request, response)
+                return
+            }
+        }
 
 
-        if(!jwtUtil.verify(request.getHeader("Authorization").toString())){
+        if (!jwtUtil.verify(request.getHeader("Authorization").toString())) {
             logger.info("JWT: ${request.getHeader("Authorization")}")
             return throw NotFoundException("Acesso Negado!")
         }

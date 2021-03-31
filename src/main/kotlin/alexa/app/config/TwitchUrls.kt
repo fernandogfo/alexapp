@@ -10,7 +10,7 @@ class TwitchUrls {
     lateinit var twitchClipsUrl: String
 
 
-    fun twitchClipUrl(clipId: String): String{
-        return twitchClipsUrl+clipId
+    fun twitchClipUrl(clipId: String): String {
+        return twitchClipsUrl + clipId
     }
 }
