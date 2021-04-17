@@ -60,13 +60,13 @@ class AuthService @Autowired constructor(
             user
         } catch (e: BadRequestException) {
             LOGGER.info("Acess Token expirado ou inválido, tentando revalidar: ${e}")
-            refreshAcessToken(user)
+            return refreshAcessToken(user)
         }
 
     }
 
     fun refreshAcessToken(user: User): User {
-
+        LOGGER.info("Revalidando token do usuário: ${user.userEmail}")
         val newToken = authClient.refreshAcessToken(
             "refresh_token", user.twitchUserRefreshAccessToken, botConfig.getClientId(),
             botConfig.getClientSecret()
