@@ -2,32 +2,19 @@ package alexa.app.config
 
 import alexa.app.utils.JwtUtil
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.http.HttpMethod
-import org.springframework.security.config.Customizer
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.JwtConfigurer
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.CorsFilter
-import org.springframework.web.filter.GenericFilterBean
-import org.springframework.web.filter.OncePerRequestFilter
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry
-import java.lang.Exception
-import org.springframework.security.config.annotation.web.builders.WebSecurity
-
-
-
 
 
 @Configuration
@@ -66,6 +53,13 @@ class SecurityConfig @Autowired constructor(private val jwtUtil: JwtUtil) : WebS
         val bean = FilterRegistrationBean(CorsFilter(source))
         bean.order = Ordered.HIGHEST_PRECEDENCE
         return bean
+    }
+
+    @Throws(Exception::class)
+    override fun configure(web: WebSecurity) {
+        web
+            .ignoring()
+            .antMatchers("/v1/auth/finish")
     }
 }
 
