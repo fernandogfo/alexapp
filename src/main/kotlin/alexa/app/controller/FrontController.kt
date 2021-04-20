@@ -50,4 +50,26 @@ class FrontController @Autowired constructor(
         return "finish"
     }
 
+    @GetMapping("v1/privacy")
+    fun getPrivacy(
+        @RequestParam(name = "code", required = true) code: String?,
+        @RequestParam(name = "scope", required = true) scope: String?,
+        model: Model
+    ): String {
+
+        model.addAttribute("code", code)
+        return "privacy"
+    }
+
+    @GetMapping("v1/term")
+    fun getTerm(
+        @RequestParam(name = "code", required = true) code: String?,
+        @RequestParam(name = "scope", required = true) scope: String?,
+        model: Model
+    ): String {
+
+        model.addAttribute("code", code)
+        return "term"
+    }
+
 }

@@ -41,6 +41,8 @@ class SecurityConfig @Autowired constructor(private val jwtUtil: JwtUtil) : WebS
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/").permitAll()
                 .antMatchers(HttpMethod.GET, "/v1/auth/alexa").permitAll()
+                .antMatchers(HttpMethod.GET, "/v1/privacy").permitAll()
+                .antMatchers(HttpMethod.GET, "/v1/term").permitAll()
                 .antMatchers(HttpMethod.POST, "/v1/auth/finish").permitAll()// GET requests don't need auth
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/liveness").permitAll()

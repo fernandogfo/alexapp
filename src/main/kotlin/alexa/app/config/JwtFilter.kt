@@ -19,7 +19,7 @@ class JwtFilter @Autowired constructor(private val jwtUtil: JwtUtil) : OncePerRe
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val pathsToPass = arrayOf("/v1/auth/alexa", "/v1/auth/finish", "", "/")
+        val pathsToPass = arrayOf("/v1/auth/alexa", "/v1/privacy", "/v1/term", "/v1/auth/finish", "", "/")
 
         pathsToPass.forEach {
             if (it == request.requestURI) {
