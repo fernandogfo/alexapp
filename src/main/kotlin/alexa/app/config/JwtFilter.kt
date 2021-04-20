@@ -23,8 +23,8 @@ class JwtFilter @Autowired constructor(private val jwtUtil: JwtUtil) : OncePerRe
 
         pathsToPass.forEach {
             if (it == request.requestURI) {
-
-                return filterChain.doFilter(request, response)
+                filterChain.doFilter(request, response)
+                return
             }
         }
 
