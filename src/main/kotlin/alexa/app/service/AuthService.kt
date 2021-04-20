@@ -8,10 +8,14 @@ import alexa.app.model.User
 import alexa.app.repository.UserRepository
 import alexa.app.utils.StringToBearer
 import com.apollographql.apollo.Logger
+import com.fasterxml.jackson.databind.ObjectMapper
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.hibernate.bytecode.BytecodeLogger.LOGGER
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sun.rmi.runtime.Log
+import java.net.URL
 
 @Service
 class AuthService @Autowired constructor(
@@ -56,15 +60,24 @@ class AuthService @Autowired constructor(
             .orElseThrow { NotFoundException("Esse usuário não está cadastrado!") }
 
         return try {
-            authClient.validateUserAcessToken(StringToBearer.insertBearer(user.twitchUserAccessToken))
-            user
+            val client = OkHttpClient()
+            val url = URL("https://id.twitch.tv/oauth2/validate")
+
+            val request = Request.Builder()
+                .url(url).addHeader("Authorization",StringToBearer.insertBearer(user.twitchUserAccessToken))
+                .get()
+                .build()
+
+            val response = client.newCall(request).execute()
+
+            if (response.isSuccessful) return user else refreshAcessToken(user)
+
         } catch (e: BadRequestException) {
             LOGGER.info("Acess Token expirado ou inválido, tentando revalidar: ${e}")
-            return refreshAcessToken(user)
+            user
         }
 
     }
-
     fun refreshAcessToken(user: User): User {
         LOGGER.info("Revalidando token do usuário: ${user.userEmail}")
         val newToken = authClient.refreshAcessToken(
@@ -74,8 +87,8 @@ class AuthService @Autowired constructor(
 
         val userToSave = userRepository.findById(user.id!!).orElseThrow { NotFoundException("Usuário não encontrado!") }
 
-        userToSave.twitchUserAccessToken = newToken.accessToken
-        userToSave.twitchUserRefreshAccessToken = newToken.refreshToken
+        userToSave.twitchUserAccessToken = newToken.access_token
+        userToSave.twitchUserRefreshAccessToken = newToken.refresh_token
         return userRepository.save(userToSave)
     }
 }
